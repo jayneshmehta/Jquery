@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <label for="country">Country Name: </label>  
+    <select name="country" id="country">
+    
+    </select>
+    <p id = "names">INDIA<br>UNITED KINGDOM<br>Sri Lanka<br>Thailand<br>Russia <br>China</p>   
+    <p id = "Show"></p>
+    <script>
+      var obj = [{"country":"INDIA"},{"country":"PAKISTAN"},{"country":"JAPAN"},{"country":"CHINA"},{"country":"RUSSIA"} ]
+      $("select").append(`<option value="PS" id="ps" selected>Please Select</option>`)
+      obj.forEach(element =>  {
+        console.log(element.country);
+        $("select").append(`<option value="${element.country}" id="${element.country}" >${element.country}</option>`)
+      });
+
+        $("select").change(function (){
+          var selec = $('[name="country"]').val();
+          console.log(typeof selec);
+          $("#names").hide();
+          $("#Show").text("Your selected Country is : "+selec);
+          if(selec == "PS"){
+            $("#Show").text("");
+            $("#names").show();  
+          }
+        });
+     </script>
+  </body>
+</html>

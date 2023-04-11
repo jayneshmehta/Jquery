@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+
+<body>
+
+  <label for="tech">Please Select your Technology : </label><br> <br>
+  <input type="radio" name="technology" id="PHP" value="PHP">
+  <label for="PHP">PHP</label>
+  <input type="radio" name="technology" id="ASPNET" value="ASPNET">
+  <label for="ASPNET">ASP.NET</label>
+  <input type="radio" name="technology" id="ASP" value="ASP">
+  <label for="ASP">ASP</label>
+  <input type="radio" name="technology" id="JSP" value="JSP">
+  <label for="JSP">JSP</label>
+  <input type="radio" name="technology" id="ColdFusion" value="ColdFusion">
+  <label for="ColdFusion">Cold Fusion</label>
+  <input type="radio" name="technology" id="PERL" value="PERL">
+  <label for="PERL">PERL</label>
+  <input type="radio" name="technology" id="Other" value="Other">
+  <label for="Other">Other</label><br><br>
+
+  <label for="selected" id="selected"> </label><br><br>
+  <span class="PHP">This is PHP</span>
+  <span class="ASPNET">This is ASP.NET</span>
+  <span class="ASP">This is ASP</span>
+  <span class="JSP">This is JSP</span>
+  <span class="ColdFusion">This is Cold Fusion</span>
+  <span class="PERL">This is PERL</span>
+  <span class="Other">This is Other</span>
+
+
+  <script>
+
+    $("span").hide();
+    $("input").click(function () {
+      $("span").hide();
+      var selec = $('input[name="technology"]:checked').val();
+      $("#selected").text("You have selected : " + selec);
+      $("." + selec).show();
+    });
+
+  </script>
+</body>
+
+</html>

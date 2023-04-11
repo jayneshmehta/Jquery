@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+  
+  <script>
+const data = [
+  {
+    "productId": 1,
+    "name": "parentProduct1",
+    "parentId":"null"
+  },
+  {
+    "productId": 2,
+    "name": "parentProduct2",
+    "parentId":"null"
+  },
+  {
+    "productId": 3,
+    "name": "childProduct1",
+    "parentId":1,
+  },
+  {
+    "productId": 4,
+    "name": "childProduct2",
+    "parentId":1,
+  },
+  {
+    "productId": 5,
+    "name": "childProduct3",
+    "parentId":1,
+  },
+  {
+    "productId": 6,
+    "name": "childProduct4",
+    "parentId":2,
+  },
+  {
+    "productId": 6,
+    "name": "childProduct5",
+    "parentId":2,
+  },
+  {
+    "productId": 4,
+    "name": "childProduct6",
+    "parentId":2,
+  }
+]
+  var main = $("<ul></ul>").attr("id","parent");
+    main.appendTo("body");
+    
+  data.forEach(element =>{
+    if(element.parentId == "null"){
+  $("<li></li>").text(element.name).append(`<ul id = ${element.productId}></ul>`).appendTo(main)
+    }else{
+        $("<li></li>").text(element.name).appendTo("#"+ element.parentId);
+    }
+  });
+    
+  </script>
+  </body>
+</html>

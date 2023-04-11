@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,
+        td,
+        tr {
+            border: 2px solid black;
+            border-collapse: collapse;
+            padding: 10px
+        }
+    </style>
+
+</head>
+
+<body>
+    <label for="tech">Please Select your CURD Operation : </label><br> <br>
+    <input type="radio" name="CURD" id="get" value="get">
+    <label for="get">GET</label>
+    <input type="radio" name="CURD" id="post" value="post">
+    <label for="post">POST</label>
+    <input type="radio" name="CURD" id="update" value="uodate">
+    <label for="update">UPDATE</label>
+    <input type="radio" name="CURD" id="delete" value="delete">
+    <label for="delete">DELETE</label><br><br>
+
+
+    <div id="inputs">
+
+        <label for="name">NAME: </label>
+        <input type="text" id="name"><br><br>
+
+
+        <label for="name">Email: </label>
+        <input type="email" id="email"><br><br>
+
+
+        <label for="gender" style="padding: 2px; margin-right: 10px;">Gender: </label>
+        <label for="male">Male: </label>
+        <input type="radio" name="gender" id="male" value="Male">
+        <label for="Female" style="padding: 2px; margin-right: 10px;">Female: </label>
+        <input type="radio" name="gender" id="Female" value="female">
+
+
+        <label for="status" style="margin-left: 20px;">Status: </label>
+        <select name="status" id="status" style="padding: 2px; margin-left: 10px;">
+            <option value="active" id="Active">Active</option>
+            <option value="inactive" id="Inactive">Inactive</option>
+        </select>
+
+        <br><br>
+        <div id="btn">
+
+        </div>
+    </div>
+
+    <table></table>
+</body>
+<script>
+
+
+
+
+    $("#inputs").hide();
+
+
+    var dataArray = [];
+
+    //get 
+
+    $("#get").click(function () {
+        $("table").show();
+        $("#inputs").hide();
+
+        var settings = {
+            "url": "https://gorest.co.in/public/v2/users",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+            },
+        };
+
+        $.ajax(settings).done(function (response) {
+            dataArray = response;
+            console.log(dataArray);
+
+            $("table").html(`<tr>
+                    <td>ID</td>
+                    <td>NAME</td>
+                    <td>EMAIL</td>
+                    <td>GENDER</td>
+                    <td>STATUS</td>
+                    </tr>`
+            )
+
+            $.each(response, function (i, dataArray) {
+                $("table").append(`<tr><td>${dataArray.id}</td>
+                    <td>${dataArray.name}</td>
+                    <td>${dataArray.email}</td>
+                    <td>${dataArray.gender}</td>
+                    <td>${dataArray.status}</td>
+                    </tr>`)
+            });
+        });
+    });
+
+    //post
+
+
+    $("#post").click(function () {
+
+        $("#inputs").show();
+        $("table").hide();
+        $("#btn").show();
+        $("#btn").html(``);
+        $("#btn").append(`<button id = "btnPOST">POST</button>`);
+
+        $("#btnPOST").click(function () {
+            var settings = {
+                "url": "https://gorest.co.in/public/v2/users",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+                },
+                "data": JSON.stringify({
+
+                    "name": $("#name").val(),
+                    "email": $("#email").val(),
+                    "gender": $('input[name="gender"]:checked').val(),
+                    "status": $('select[name="status"]').val()
+                }),
+            }
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                $("#get").click();
+            });
+        });
+    });
+    //Update
+
+    $("#update").click(function () {
+        $("table").show();
+        $("#inputs").show();
+        $("#btn").hide();
+        var settings = {
+            "url": "https://gorest.co.in/public/v2/users",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+            },
+        };
+
+        $.ajax(settings).done(function (response) {
+
+            dataArray = response;
+            $("table").html(`<tr>
+                    <td>ID</td>
+                    <td>NAME</td>
+                    <td>EMAIL</td>
+                    <td>GENDER</td>
+                    <td>STATUS</td>
+                    <td>UPDATE</td>
+                    </tr>`
+            )
+
+            $.each(response, function (i, dataArray) {
+                $("table").append(`<tr><td>${dataArray.id}</td>
+                    <td>${dataArray.name}</td>
+                    <td>${dataArray.email}</td>
+                    <td>${dataArray.gender}</td>
+                    <td>${dataArray.status}</td>
+                    <td><button id="${dataArray.id}">Update</button></td>
+                    </tr>`)
+                $("#" + `${dataArray.id}`).click(function () {
+                    console.log(`${dataArray.id}`);
+
+                    var settings = {
+                        "url": `https://gorest.co.in/public/v2/users/${dataArray.id}`,
+                        "method": "PATCH",
+                        "timeout": 0,
+                        "headers": {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+                        },
+                        "data": JSON.stringify({
+                            "name": $("#name").val(),
+                            "email": $("#email").val(),
+                            "gender": $('input[name="gender"]:checked').val(),
+                            "status": $('select[name="status"]').val()
+                        }),
+                    };
+
+                    $.ajax(settings).done(function (response) {
+                        alert(response);
+                        $("#get").click();
+                    });
+                });
+            });
+
+        });
+    });
+
+
+    //delete
+
+    $("#delete").click(function () {
+        $("table").show();
+        $("#inputs").hide();
+
+        var settings = {
+            "url": "https://gorest.co.in/public/v2/users",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+            },
+        };
+
+        $.ajax(settings).done(function (response) {
+
+            dataArray = response;
+
+
+            $("table").html(`<tr>
+                    <td>ID</td>
+                    <td>NAME</td>
+                    <td>EMAIL</td>
+                    <td>GENDER</td>
+                    <td>STATUS</td>
+                    <td>DELETE</td>
+                    </tr>`
+            )
+
+            $.each(response, function (i, dataArray) {
+                $("table").append(`<tr><td>${dataArray.id}</td>
+                    <td>${dataArray.name}</td>
+                    <td>${dataArray.email}</td>
+                    <td>${dataArray.gender}</td>
+                    <td>${dataArray.status}</td>
+                    <td><button id="${i}">delete</button></td>
+                    </tr>`)
+                $("#" + i).click(function () {
+                    var settings = {
+                        "url": `https://gorest.co.in/public/v2/users/${dataArray.id}`,
+                        "method": "DELETE",
+                        "timeout": 0,
+                        "headers": {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer d1f78cd95096c17b2a71d77ed9b4e09e7869b39ae75324bfe95f907a37a39707"
+                        },
+                    };
+                    $.ajax(settings).done(function (response) {
+                        console.log("done");
+                        $("#get").click();
+                    });
+                });
+            });
+        });
+    });
+</script>
+
+</html>
